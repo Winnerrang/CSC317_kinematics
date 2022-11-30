@@ -14,8 +14,6 @@ Eigen::Affine3d euler_angles_to_transform(
   float degToRad = M_PI / 180;
 
 
-  A.matrix().setIdentity();
-  R.setIdentity();
   R = Eigen::AngleAxisd(xzx[2] * degToRad, Eigen::Vector3d::UnitX()) *
       Eigen::AngleAxisd(xzx[1] * degToRad, Eigen::Vector3d::UnitZ()) *
       Eigen::AngleAxisd(xzx[0] * degToRad, Eigen::Vector3d::UnitX());
