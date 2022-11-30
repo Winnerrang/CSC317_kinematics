@@ -21,7 +21,7 @@ Eigen::Affine3d euler_angles_to_transform(
 ;
   A.matrix() << R, Eigen::Vector3d::Zero(),
                 0, 0, 0, 1;
-  std::cout << A.matrix() << std::endl;
+ 
   return A;
   /////////////////////////////////////////////////////////////////////////////
 }
