@@ -1,7 +1,7 @@
 #include "forward_kinematics.h"
 #include "euler_angles_to_transform.h"
 #include <functional> // std::function
-
+#include <iostream>
 void forward_kinematics(
   const Skeleton & skeleton,
   std::vector<Eigen::Affine3d,Eigen::aligned_allocator<Eigen::Affine3d> > & T)
@@ -15,16 +15,21 @@ void forward_kinematics(
 
 	find_orientation = [&](int index) {
 		if (is_assigned[index]) return;
-
-		if (skeleton[index].parent_index == -1) {
-			T[index] = skeleton[index].rest_T * euler_angles_to_transform(skeleton[index].xzx) *
-				skeleton[index].rest_T.inverse();
+		
+		auto bone = skeleton[index];
+		
+		if (bone.parent_index == -1) {
+			T[index] = bone.rest_T * euler_angles_to_transform(bone.xzx) *
+				bone.rest_T.inverse();
 			is_assigned[index] = true;
 			return;
 		}
 
-		T[index] = T[skeleton[index].parent_index] * skeleton[index].rest_T * euler_angles_to_transform(skeleton[index].xzx) *
-			skeleton[index].rest_T.inverse();
+		int parent_index = bone.parent_index;
+ 		if (!is_assigned[parent_index]) find_orientation(parent_index);
+
+		T[index] = T[parent_index] * bone.rest_T * euler_angles_to_transform(bone.xzx) *
+			bone.rest_T.inverse();
 		is_assigned[index] = true;
 
 
@@ -33,5 +38,6 @@ void forward_kinematics(
 	for (int i = 0; i < skeleton.size(); i++) {
 		find_orientation(i);
 	}
+
   /////////////////////////////////////////////////////////////////////////////
 }
