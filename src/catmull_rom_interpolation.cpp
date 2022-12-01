@@ -14,10 +14,13 @@ Eigen::Vector3d catmull_rom_interpolation(
 	//binary search to find which two data the time is in between
 	int l(0), r(keyframes.size() - 1);
 	
-	// it is doing extrapolation
-	if (keyframes[l].first > t || keyframes[r].first < t) {
-		std::cout << "You are doing extrapolation, I can not predict future" << std::endl;
-		return Eigen::Vector3d::Zero();
+	// it is doing extrapolation, assume constant 
+	if (keyframes[l].first >= t) {
+
+		return keyframes[l].second;
+	}
+	else if (keyframes[r].first <= t) {
+		return keyframes[r].second;
 	}
 
 	while(r - l > 1){
@@ -31,9 +34,10 @@ Eigen::Vector3d catmull_rom_interpolation(
 
 	}
 
-	/*std::cout << l << std::endl;
-	std::cout << r << std::endl;*/
-	assert(r - l >= 0);
+	assert(keyframes[l].first <= t && keyframes[r].first >= t);
+	//std::cout << l  << " " << r << std::endl;
+	
+	assert(r - l >= 0 && r - l <= 1);
 	if (keyframes[l].first == t) return keyframes[l].second;
 	if (keyframes[r].first == t) return keyframes[r].second;
 

@@ -38,13 +38,7 @@ void forward_kinematics(
 
 	for (int i = 0; i < skeleton.size(); i++) {
 		find_orientation(i);
-		//std::cout << T[i].matrix() << std::endl;
 	}
 
-	/*for (int i = 0; i < skeleton.size(); i++) {
-
-		std::cout << skeleton[i].rest_T.matrix() << std::endl;
-	}
-	exit(0);*/
   /////////////////////////////////////////////////////////////////////////////
 }
