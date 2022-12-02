@@ -1,4 +1,5 @@
 #include "linear_blend_skinning.h"
+#include <iostream>
 
 void linear_blend_skinning(
   const Eigen::MatrixXd & V,
@@ -12,14 +13,14 @@ void linear_blend_skinning(
 	U.resize(V.rows(), V.cols());
 
 	for (int v_index = 0; v_index < V.rows(); v_index++) {
-		auto v = V.row(v_index);
+		Eigen::Vector3d v = V.row(v_index).transpose();
 
 		Eigen::Vector3d new_v = Eigen::Vector3d::Zero();
 		
 		for (int bone_index = 0; bone_index < skeleton.size(); bone_index++) {
 			auto bone = skeleton[bone_index];
-			new_v += W(v_index, bone.weight_index) * (T[bone_index] * bone.rest_T
-				* Eigen::Vector3d(bone.length, 0, 0));
+			if (bone.weight_index == -1) continue;
+			new_v += W(v_index, bone.weight_index) * (T[bone_index] * v);
 		}
 
 		U.row(v_index) = new_v.transpose();
