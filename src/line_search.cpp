@@ -10,6 +10,24 @@ double line_search(
 {
   /////////////////////////////////////////////////////////////////////////////
   // Replace with your code
+	double sigma = 10000;
+
+	double E0 = f(z);
+
+
+	for (int iter = 0; iter < max_step; iter++) {
+		Eigen::VectorXd test_z = z + sigma * dz;
+		proj_z(test_z);
+		double E = f(test_z);
+
+		if (E >= E0) {
+			sigma /= 2;
+		}
+		else {
+			return sigma;
+		}
+
+	}
   return 0;
   /////////////////////////////////////////////////////////////////////////////
 }

@@ -10,5 +10,11 @@ void projected_gradient_descent(
 {
   /////////////////////////////////////////////////////////////////////////////
   // Add your code here
+  
+	for (int i = 0; i < max_iters; i++) {
+		auto JT = grad_f(z);
+		double sigma = line_search(f, proj_z, z, -1 * JT, 20);
+		z = z - sigma * JT;
+	}
   /////////////////////////////////////////////////////////////////////////////
 }
