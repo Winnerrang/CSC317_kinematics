@@ -1,5 +1,6 @@
 #include "projected_gradient_descent.h"
 #include "line_search.h"
+#include <iostream>
 
 void projected_gradient_descent(
   const std::function<double(const Eigen::VectorXd &)> & f,
@@ -13,8 +14,10 @@ void projected_gradient_descent(
   
 	for (int i = 0; i < max_iters; i++) {
 		auto JT = grad_f(z);
-		double sigma = line_search(f, proj_z, z, -1 * JT, 20);
+		double sigma = line_search(f, proj_z, z, -1 * JT, 10000);
+		//std::cout << sigma << std::endl;
 		z = z - sigma * JT;
+		proj_z(z);
 	}
   /////////////////////////////////////////////////////////////////////////////
 }

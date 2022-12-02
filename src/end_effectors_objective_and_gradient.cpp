@@ -22,11 +22,10 @@ void end_effectors_objective_and_gradient(
       auto new_skeleton = copy_skeleton_at(skeleton, A);
       auto tips_position = transformed_tips(new_skeleton, b);
       
-      if (tips_position.size() == xb0.size()) {
+      if (tips_position.size() != xb0.size()) {
           std::cout << "Size does not match between xb0 and tip_position" << std::endl;
           exit(1);
       }
-
 
       return 0.5 * (tips_position - xb0).squaredNorm();
   };
